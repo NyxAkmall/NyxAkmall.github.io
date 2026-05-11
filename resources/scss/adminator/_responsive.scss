@@ -1,0 +1,163 @@
+/* ============ RESPONSIVE ============ */
+
+/* Auth pages: collapse the marketing aside when the split-screen no longer fits.
+   (Lives here, not in _auth.scss, so it wins over the later default rules there.) */
+@media (max-width: 900px) {
+  .auth-shell { grid-template-columns: 1fr; }
+  .auth-aside { display: none; }
+}
+
+@media (max-width: 1200px) {
+  /* Dashboard */
+  .sv-regions { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px; }
+  .sv-radials { grid-template-columns: 1fr; gap: 18px; }
+  .kpi-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+  /* Email */
+  .mail-shell { grid-template-columns: 200px 1fr; height: auto; min-height: 0; }
+  .mail-reader { display: none; }
+
+  /* Calendar */
+  .cal-shell { grid-template-columns: 240px 1fr; }
+  .cal-grid { grid-auto-rows: minmax(96px, 1fr); }
+}
+
+@media (max-width: 1100px) {
+  .shell { grid-template-columns: 72px 1fr; }
+  .d-sidebar { padding: 20px 10px; }
+  .brand-text, .brand-tag, .nav-label, .nav-link > span:not(.nav-badge), .nav-link .nav-badge,
+  .workspace-text, .workspace-chev, .nav-submenu, .nav-link .chev { display: none; }
+  .brand { justify-content: center; padding: 0 0 18px; }
+  .nav-link { justify-content: center; padding: 10px; }
+  .nav-link.is-active::before { left: -10px; }
+  .workspace { justify-content: center; padding: 6px; }
+  .col-6 { grid-column: span 12; }
+
+  /* Chat */
+  .chat-shell { grid-template-columns: 240px 1fr; }
+}
+
+@media (max-width: 720px) {
+  /* ---- Shell / sidebar drawer ----
+     Sidebar becomes position:fixed (off-grid), so collapse the grid to a
+     single column — otherwise .main is auto-placed into the empty column-1
+     (0px) and disappears. */
+  .shell { display: block; }
+  .d-sidebar {
+    position: fixed;
+    top: 0; left: 0;
+    width: 280px;
+    height: 100vh;
+    z-index: 100;                 /* above backdrop (90) */
+    transform: translateX(-100%);
+    transition: transform 240ms cubic-bezier(.2,.7,.2,1);
+    box-shadow: 0 12px 40px -8px rgb(0 0 0 / 0.4);
+
+    /* Restore full-width nav (override the 1100px collapse) */
+    padding: 22px 16px 18px;
+  }
+  .brand-text, .brand-tag, .nav-label, .nav-link > span:not(.nav-badge), .nav-link .nav-badge,
+  .workspace-text, .workspace-chev, .nav-submenu, .nav-link .chev { display: revert; }
+  .brand { justify-content: flex-start; padding: 4px 10px 20px; }
+  .nav-link { justify-content: flex-start; padding: 9px 12px; }
+  .workspace { justify-content: flex-start; padding: 6px 10px; }
+
+  body.has-drawer-open .d-sidebar { transform: translateX(0); }
+  body.has-drawer-open { overflow: hidden; }   /* lock scroll behind backdrop */
+
+  .hamburger { display: inline-flex; }
+
+  /* ---- Topbar: aggressive de-clutter ---- */
+  .d-topbar { padding: 0 12px; }
+  .topbar-actions { gap: 2px; }
+
+  /* Crumbs eat horizontal space — hide everything except the active page */
+  .crumbs { gap: 6px; min-width: 0; flex: 1; overflow: hidden; }
+  .crumbs > span:not(.current), .crumbs .sep { display: none; }
+  .crumbs .current { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+  /* Search becomes its own icon-button (text + kbd hidden, padding tightened) */
+  .cmd { min-width: 0; padding: 0; width: 36px; height: 36px; justify-content: center; }
+  .cmd span, .cmd .kbd { display: none; }
+  .cmd svg { width: 16px; height: 16px; }
+
+  /* Trim avatar margin */
+  .avatar { margin-left: 2px; }
+
+  /* ---- Dropdowns: prevent off-screen overflow ---- */
+  .dd-menu {
+    min-width: 0;
+    width: calc(100vw - 16px);
+    max-width: 360px;
+    right: -8px;            /* pin to viewport edge minus topbar padding (12px) */
+  }
+  .dd-menu.dd-profile {
+    width: calc(100vw - 16px);
+    max-width: 280px;
+  }
+
+  /* ---- Content / hero / footer ---- */
+  .content { padding: 20px 16px 16px; }
+  .d-footer { padding: 20px 16px; flex-direction: column; gap: 10px; align-items: flex-start; }
+  .hero { flex-direction: column; align-items: flex-start; gap: 20px; }
+  .hero-actions { flex-wrap: wrap; }
+
+  /* ---- Generic grid ---- */
+  .grid { gap: 16px; }
+
+  /* ---- Dashboard ---- */
+  .kpi-grid { grid-template-columns: 1fr; }
+  .sv-regions { grid-template-columns: 1fr; gap: 22px; }
+  .monthly-footer { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .wx-forecast { grid-template-columns: repeat(4, 1fr); gap: 6px; }
+  .wx-hero { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .wx-date { text-align: left; }
+  .sales-summary { flex-direction: column; align-items: flex-start; gap: 12px; }
+
+  /* Card breathing room */
+  .card { padding: 18px; }
+  .card-head { flex-wrap: wrap; gap: 10px; }
+
+  /* ---- Charts page ---- */
+  .chart-canvas-wrap { min-height: 200px; }
+
+  /* ---- Tables: ensure horizontal scroll fallback ---- */
+  .data-toolbar { flex-direction: column; align-items: stretch; gap: 10px; }
+  .data-toolbar-left, .data-toolbar-right { min-width: 0; flex-wrap: wrap; }
+  .data-foot { flex-direction: column; gap: 12px; align-items: flex-start; }
+
+  /* ---- Email ---- */
+  .mail-shell { grid-template-columns: 1fr; }
+  .mail-rail { display: none; }
+  .mail-hero { flex-direction: column; align-items: flex-start; gap: 16px; }
+
+  /* ---- Chat ---- */
+  .chat-shell { grid-template-columns: 1fr; height: auto; }
+  .chat-rail { display: none; }
+
+  /* ---- Calendar ---- */
+  .cal-shell { grid-template-columns: 1fr; }
+  .cal-toolbar { flex-wrap: wrap; gap: 10px; padding: 14px; }
+  .cal-toolbar-left { width: 100%; justify-content: space-between; }
+  .cal-views { order: 3; }
+  .cal-grid { grid-auto-rows: minmax(78px, 1fr); }
+  .cal-weekdays > div { padding: 8px 6px; font-size: 9px; letter-spacing: 0.1em; }
+  .cal-cell { padding: 5px; }
+  .cal-chip-time { display: none; }
+
+  /* ---- Compose page (inline-styled form rows) ---- */
+  .compose-row { grid-template-columns: 1fr !important; gap: 6px !important; }
+  .compose-row-actions { justify-content: flex-start !important; }
+
+  /* ---- Auth pages ---- */
+  .auth-main { padding: 24px 20px; }
+}
+
+@media (max-width: 480px) {
+  .monthly-footer { grid-template-columns: 1fr; }
+  .wx-forecast { grid-template-columns: repeat(2, 1fr); }
+  .form-actions { flex-direction: column; align-items: stretch; }
+  .form-actions .btn { width: 100%; justify-content: center; }
+  .form-actions .spacer { display: none; }
+  .social-row { grid-template-columns: 1fr; }
+}
